@@ -1,0 +1,224 @@
+swagger: '2.0'
+info:
+  description: "Goals API - Codeverso"
+  version: '1.0'
+  title: "Goals API - Codeverso"
+host: localhost:8080
+basePath: /workshop
+schemes:
+  - http
+paths:
+  '/goals':
+    post:
+      tags:
+        - Goals
+      description: Cria um novo goal.
+      parameters:
+        - name: GoalPostRequest
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/GoalsPostRequest'
+      responses:
+        '201':
+          description: Criado.
+        '400':
+          description: Requisição Mal Formada.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ClientError'
+        '401':
+          description: Erro de autenticação.
+        '403':
+          description: Erro de permissão.
+        '404':
+          description: Recurso não encontrado.
+        '422':
+          description: Entidade não processável.
+          schema:
+            $ref: '#/definitions/ClientError'
+        '500':
+          description: Erro interno do servidor.
+        '503':
+          description: Erro do servidor indisponível.
+        '504':
+          description: Limite máximo de tempo atingido.
+    get:
+      tags:
+        - Goals
+      description: Obtém uma lista de todos os goals.
+      responses:
+        '200':
+          description: OK.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GoalsResponse'
+        '400':
+          description: Requisição Mal Formada.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ClientError'
+        '401':
+          description: Erro de autenticação.
+        '403':
+          description: Erro de permissão.
+        '500':
+          description: Erro interno do servidor.
+        '503':
+          description: Erro do servidor indisponível.
+        '504':
+          description: Limite máximo de tempo atingido.
+  '/goals/{id}':
+    get:
+      tags:
+        - Goals
+      description: Obtém um goal pelo id.
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of goal to return"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK.
+          schema:
+            $ref: '#/definitions/GoalsResponse'
+        '400':
+          description: Requisição Mal Formada.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ClientError'
+        '401':
+          description: Erro de autenticação.
+        '403':
+          description: Erro de permissão.
+        '500':
+          description: Erro interno do servidor.
+        '503':
+          description: Erro do servidor indisponível.
+        '504':
+          description: Limite máximo de tempo atingido.
+    put:
+      tags:
+        - Goals
+      description: Atualiza um goal pelo id.
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of goal to return"
+          required: true
+          type: string
+      responses:
+        '204':
+          description: Sem conteúdo.
+        '400':
+          description: Requisição Mal Formada.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ClientError'
+        '401':
+          description: Erro de autenticação.
+        '403':
+          description: Erro de permissão.
+        '500':
+          description: Erro interno do servidor.
+        '503':
+          description: Erro do servidor indisponível.
+        '504':
+          description: Limite máximo de tempo atingido.
+    delete:
+      tags:
+        - Goals
+      description: Remove um goal pelo id.
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of goal to return"
+          required: true
+          type: string
+      responses:
+        '204':
+          description: Sem conteúdo.
+        '400':
+          description: Requisição Mal Formada.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ClientError'
+        '401':
+          description: Erro de autenticação.
+        '403':
+          description: Erro de permissão.
+        '500':
+          description: Erro interno do servidor.
+        '503':
+          description: Erro do servidor indisponível.
+        '504':
+          description: Limite máximo de tempo atingido.
+definitions:
+  ClientError:
+    type: object
+    properties:
+      code:
+        type: string
+        description: Código do erro
+      message:
+        type: string
+        description: Mensagem de erro
+  GoalsPostRequest:
+    required:
+      - "type"
+      - "deadline"
+      - "expectedQuantity"
+      - "performedQuantity"
+      - "reward"
+      - "isCompleted"
+    properties:
+      type:
+        type: string
+        description: tipo do goal
+        enum:
+          - PERSONAL
+          - PROFESSIONAL
+      deadline:
+        type: string
+        description: data do deadline (yyyy-MM-dd)
+      expectedQuantity:
+        type: number
+      performedQuantity:
+        type: number
+      reward:
+        type: string
+        description: tipo do goal
+      isCompleted:
+        type: boolean
+  GoalsResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        description: id do goal.
+      type:
+        type: string
+        description: tipo do goal
+        enum:
+          - PERSONAL
+          - PROFESSIONAL
+      deadline:
+        type: string
+        description: data do deadline (yyyy-MM-dd)
+      expectedQuantity:
+        type: number
+      performedQuantity:
+        type: number
+      reward:
+        type: string
+        description: tipo do goal
+      isCompleted:
+        type: boolean
